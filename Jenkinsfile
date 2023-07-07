@@ -3,6 +3,7 @@ pipeline {
 
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    VERSION = "${env.BUILD_NUMBER}"
   }
 
   stages {
@@ -33,7 +34,7 @@ pipeline {
     }
     stage('Build') {
       steps {
-        sh 'docker build . -t sstepanov97/cicd-test:latest'
+        sh 'docker build . -t sstepanov97/cicd-test:${VERSION}'
       }
     }
     stage('Login') {
@@ -43,7 +44,7 @@ pipeline {
     }
     stage('Push Image') {
       steps {
-        sh 'docker push sstepanov97/cicd-test:latest'
+        sh 'docker push sstepanov97/cicd-test:${VERSION}'
       }
     }
   }
