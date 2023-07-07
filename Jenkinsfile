@@ -21,5 +21,27 @@ pipeline {
         sh 'npm test'
       }
     }
+    stage('Build') {
+      steps {
+        sh 'docker build . -t sstepanov97/cicd-test:latest'
+      }
+    }
+    stage('Login') {
+      steps {
+        withCredentials([string(credentialsId: 'dockerhub', variable: 'DOCKERHUB_CREDENTIALS')]) {
+          sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
+        }
+      }
+    }
+    stage('Push Image') {
+      steps {
+        sh 'docker push sstepanov97/cicd-test:latest'
+      }
+    }
+  }
+  post {
+    always {
+      sh 'docker logout'
+    }
   }
 }
