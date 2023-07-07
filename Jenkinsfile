@@ -1,5 +1,9 @@
 pipeline {
-  agent any
+  agent {
+    docker {
+      image 'node:18.3.0-alpine3.14'
+    }
+  }
 
   stages {
     stage('Checkout') {
@@ -23,6 +27,7 @@ pipeline {
       }
     }
     stage('Login') {
+      agent any
       steps {
         withCredentials([string(credentialsId: 'dockerhub', variable: 'DOCKERHUB_CREDENTIALS')]) {
           sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
@@ -30,12 +35,14 @@ pipeline {
       }
     }
     stage('Push Image') {
+      agent any
       steps {
         sh 'docker push sstepanov97/cicd-test:latest'
       }
     }
   }
   post {
+    agent any
     always {
       sh 'docker logout'
     }
