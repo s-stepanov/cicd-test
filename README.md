@@ -8,4 +8,4 @@ Pipeline steps:
 4. Build Image
 5. Push the image to Dockerhub.
 
-Pipeline should be triggered by push to master.
+Pipeline should be triggered by push to master
