@@ -9,3 +9,4 @@ Pipeline steps:
 5. Push the image to Dockerhub.
 
 Pipeline should be triggered by push to master.
+.
